@@ -50,7 +50,7 @@ LOCK TABLES `equipos` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `jugadores`
+---- Table structure for table `jugadores`
 --
 
 DROP TABLE IF EXISTS `jugadores`;
