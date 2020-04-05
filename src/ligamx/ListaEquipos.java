@@ -5,6 +5,13 @@
  */
 package ligamx;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Josue
@@ -17,6 +24,45 @@ public class ListaEquipos extends javax.swing.JDialog {
     public ListaEquipos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        try{
+          
+          
+          DefaultTableModel modelo=new DefaultTableModel(); 
+          jTable1.setModel(modelo);
+          PreparedStatement ps=null;
+          ResultSet rs=null;
+          EjemConexion con= new EjemConexion();
+          Connection cn=con.conector();
+          String sql="SELECT id_equipo,nombre,ciudad,presupuesto FROM equipo";
+          ps=cn.prepareStatement(sql);
+          rs=ps.executeQuery();
+          
+          ResultSetMetaData rsmd= rs.getMetaData();
+          int cantidadColumnas=rsmd.getColumnCount();
+          
+          modelo.addColumn("id equipo");
+          modelo.addColumn("nombre");
+          modelo.addColumn("ciudad");
+          modelo.addColumn("presupuesto");
+          
+          while(rs.next()){
+              
+              Object[] filas=new Object[cantidadColumnas];
+              
+              for(int i=0;1<cantidadColumnas;i++){
+                  
+                  filas[i]=rs.getObject(i+1);
+              }
+              
+              modelo.addRow(filas);
+          }
+          
+          
+            
+        }catch(SQLException ex){
+           System.err.println(ex.toString()); 
+        }
     }
 
     /**

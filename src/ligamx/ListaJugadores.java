@@ -8,8 +8,9 @@ package ligamx;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
-import static ligamx.AltaEquipo.getConection;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,18 +18,58 @@ import static ligamx.AltaEquipo.getConection;
  */
 public class ListaJugadores extends javax.swing.JDialog {
 
-    private static final String driver="com.mysql.jdbc.Driver";
-    private static final String user="root";
-    private static final String pass="1234";
-    private static final String url="jdbc:mysql://localhost:3306/db/dbligamx";
-    PreparedStatement ps;
-    ResultSet rs;
+    
+     
     /**
      * Creates new form ListaJugadores
      */
     public ListaJugadores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        try{
+          
+          
+          DefaultTableModel modelo=new DefaultTableModel(); 
+          jTable1.setModel(modelo);
+          PreparedStatement ps=null;
+          ResultSet rs=null;
+          EjemConexion con= new EjemConexion();
+          Connection cn=con.conector();
+          String sql="SELECT nom,pat,mat,edad,posicion,id_equipo,sueldo FROM jugadores";
+          ps=cn.prepareStatement(sql);
+          rs=ps.executeQuery();
+          
+          ResultSetMetaData rsmd= rs.getMetaData();
+          int cantidadColumnas=rsmd.getColumnCount();
+          
+          modelo.addColumn("nombre");
+          modelo.addColumn("apellido paterno");
+          modelo.addColumn("apellido materno");
+          modelo.addColumn("edad");
+          modelo.addColumn("posicion");
+          modelo.addColumn("id equipo");
+          modelo.addColumn("sueldo");
+          
+          while(rs.next()){
+              
+              Object[] filas=new Object[cantidadColumnas];
+              
+              for(int i=0;1<cantidadColumnas;i++){
+                  
+                  filas[i]=rs.getObject(i+1);
+              }
+              
+              modelo.addRow(filas);
+          }
+          
+          
+            
+        }catch(SQLException ex){
+           System.err.println(ex.toString()); 
+        }
+        
+        
     }
 
     /**
@@ -46,22 +87,22 @@ public class ListaJugadores extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         Busqueda = new javax.swing.JTextField();
         Buscar = new javax.swing.JButton();
-        Modificar = new javax.swing.JButton();
-        Regresar = new javax.swing.JButton();
-        Regresar1 = new javax.swing.JButton();
+        mostrar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
 
+        jTable1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -88,54 +129,33 @@ public class ListaJugadores extends javax.swing.JDialog {
             }
         });
 
-        Modificar.setBackground(new java.awt.Color(255, 204, 51));
-        Modificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        Modificar.setText("MODIFICAR");
-        Modificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarActionPerformed(evt);
-            }
-        });
+        mostrar.setBackground(new java.awt.Color(255, 51, 51));
+        mostrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        mostrar.setText("MOSTRAR");
 
-        Regresar.setBackground(new java.awt.Color(255, 51, 51));
-        Regresar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        Regresar.setText("REGRESAR");
-        Regresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegresarActionPerformed(evt);
-            }
-        });
-
-        Regresar1.setBackground(new java.awt.Color(255, 51, 51));
-        Regresar1.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        Regresar1.setText("Eliminar");
-        Regresar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Regresar1ActionPerformed(evt);
-            }
-        });
+        jButton1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton1.setText("MODIFICAR");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 447, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(Buscar)
-                        .addGap(28, 28, 28)
-                        .addComponent(Modificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Regresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Regresar1))
-                    .addComponent(Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(Buscar)
+                                .addGap(72, 72, 72)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(75, 75, 75)
+                                .addComponent(mostrar)))
+                        .addGap(0, 97, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,13 +163,13 @@ public class ListaJugadores extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Buscar)
-                    .addComponent(Modificar)
-                    .addComponent(Regresar)
-                    .addComponent(Regresar1))
-                .addGap(0, 47, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mostrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -164,7 +184,8 @@ public class ListaJugadores extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -178,42 +199,10 @@ public class ListaJugadores extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_BuscarActionPerformed
 
-    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
-
-    }//GEN-LAST:event_ModificarActionPerformed
-
-    private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
+    private void mostrarActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_RegresarActionPerformed
-
-    private void Regresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Regresar1ActionPerformed
-        // TODO add your handling code here:
-        Connection con =null;
-        int fila = jTable1.getSelectedRow();
-        String valor =jTable1.getValueAt(fila, 0).toString();
-        try{ 
-            con =getConection();
-            ps= con.prepareStatement("DELETE FROM jugadores where Id='"+valor+"'");
-            int res =ps.executeUpdate();
-            if(res > 0){
-                JOptionPane.showMessageDialog(null, "Eliminado");
-                
-            } else {
-                 JOptionPane.showMessageDialog(null, "Sin eliminar");
-                 
-            }
-            
-            con.close();
-            
-        }catch(Exception e){
-            System.err.println(e);
-        }
-        
-        
-
-    }//GEN-LAST:event_Regresar1ActionPerformed
-
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -259,12 +248,11 @@ public class ListaJugadores extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;
     private javax.swing.JTextField Busqueda;
-    private javax.swing.JButton Modificar;
-    private javax.swing.JButton Regresar;
-    private javax.swing.JButton Regresar1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton mostrar;
     // End of variables declaration//GEN-END:variables
 }

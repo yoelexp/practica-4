@@ -6,9 +6,10 @@
 package ligamx;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,40 +17,20 @@ import javax.swing.JOptionPane;
  * @author Josue
  */
 public class AltaEquipo extends javax.swing.JDialog {
- private static final String driver="com.mysql.jdbc.Driver";
-    private static final String user="root";
-    private static final String pass="1234";
-    private static final String url="jdbc:mysql://localhost:3306/db/dbligamx";
-    PreparedStatement ps;
-    ResultSet rs;
-    
-  public static Connection getConection(){
-      Connection con= null;
-      try{
-            Class.forName(driver);
-            // Nos conectamos a la bd
-            con= (Connection) DriverManager.getConnection(url, user, pass);
-            // Si la conexion fue exitosa mostramos un mensaje de conexion exitosa
-            JOptionPane.showMessageDialog(null,"conexion exitosa");
-          // if (con!=null){
-              //  jLabel1.setText("Conexion establecida");
-          //  }
-        }
-        // Si la conexion NO fue exitosa mostramos un mensaje de error
-        catch (Exception e){
-           // jLabel1.setText("Error de conexion" + e);
-            System.err.println(e);
-        }
-        return con;
-  
-  
-  }
+
     /**
      * Creates new form AltaEquipo
      */
+    
+        EjemConexion con= new EjemConexion();
+        Connection cn=con.conector();
+    
     public AltaEquipo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        
+        
     }
 
     /**
@@ -65,13 +46,12 @@ public class AltaEquipo extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         Nombre = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         Presupuesto = new javax.swing.JTextField();
         Aceptar = new javax.swing.JButton();
         Cancelar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        limite = new javax.swing.JTextField();
+        ciudad = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -91,11 +71,8 @@ public class AltaEquipo extends javax.swing.JDialog {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel4.setText("Lim. Jugadores");
-
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel7.setText("Logo");
+        jLabel7.setText("CIUDAD");
 
         Presupuesto.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
 
@@ -111,21 +88,9 @@ public class AltaEquipo extends javax.swing.JDialog {
         Cancelar.setBackground(new java.awt.Color(255, 51, 0));
         Cancelar.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         Cancelar.setText("CANCELAR");
-        Cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelarActionPerformed(evt);
-            }
-        });
 
         jLabel8.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         jLabel8.setText("Presupuesto");
-
-        limite.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
-        limite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                limiteActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,7 +109,9 @@ public class AltaEquipo extends javax.swing.JDialog {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel7)))
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -153,35 +120,31 @@ public class AltaEquipo extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(76, 76, 76)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(limite, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addComponent(Presupuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(302, 302, 302))))
+                        .addGap(259, 259, 259))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(limite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Presupuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(32, 32, 32)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(Aceptar)
                 .addGap(41, 41, 41)
                 .addComponent(Cancelar)
@@ -192,7 +155,7 @@ public class AltaEquipo extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,39 +171,20 @@ public class AltaEquipo extends javax.swing.JDialog {
 
     private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
         // TODO add your handling code here:
-        Connection con =null;
-        try{ 
-            con =getConection();
-            ps= con.prepareStatement("INSERT INTO equipos(nombre,presupuesto,limite) VALUES(?,?,? )");
-            ps.setString(1,Nombre.getText());
-            ps.setString(2,Presupuesto.getText());
-            ps.setInt(3,Integer.parseInt(limite.getText()));
-            ps.setInt(4,Integer.parseInt(Presupuesto.getText()));
-            int res =ps.executeUpdate();
-            if(res > 0){
-                JOptionPane.showMessageDialog(null, "Equipo Agregado");
-                
-            } else {
-                 JOptionPane.showMessageDialog(null, "Equipo no agregado");
-                 
-            }
+        try {
+            PreparedStatement pps;
+            pps = cn.prepareStatement("INSERT INTO equipos(nombre,cuidad,presupuesto)VALUES(?,?,?)");
             
-            con.close();
-            
-        }catch(Exception e){
-            System.err.println(e);
+            pps.setString(1,Nombre.getText());
+            pps.setString(2,ciudad.getText());
+            pps.setString(3,Presupuesto.getText());
+            pps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "jugador agregado");
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaJugadores.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_AceptarActionPerformed
-
-    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_CancelarActionPerformed
-
-    private void limiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limiteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_limiteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,12 +233,11 @@ public class AltaEquipo extends javax.swing.JDialog {
     private javax.swing.JButton Cancelar;
     private javax.swing.JTextField Nombre;
     private javax.swing.JTextField Presupuesto;
+    private javax.swing.JTextField ciudad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField limite;
     // End of variables declaration//GEN-END:variables
 }

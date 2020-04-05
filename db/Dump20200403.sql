@@ -50,22 +50,21 @@ LOCK TABLES `equipos` WRITE;
 UNLOCK TABLES;
 
 --
----- Table structure for table `jugadores`
+-- Table structure for table `jugadores`
 --
 
 DROP TABLE IF EXISTS `jugadores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jugadores` (
-  `idjugadores` int(11) AUTO_INCREMENT  ,
-  --`pat` varchar(45) NOT NULL,
-  --`mat` varchar(45) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `apellidos` varchar(45) NOT NULL,
+  `idjugadores` int(11) NOT NULL,
+  `nom` varchar(45) NOT NULL,
+  `pat` varchar(45) NOT NULL,
+  `mat` varchar(45) NOT NULL,
   `sexo` varchar(45) NOT NULL,
   `posicion` varchar(45) NOT NULL,
-  `sueldo` int(11) NOT NULL,
   `equipo` varchar(45) NOT NULL,
+  `sueldo` int(11) NOT NULL,
   PRIMARY KEY (`idjugadores`),
   KEY `equipo_idx` (`equipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

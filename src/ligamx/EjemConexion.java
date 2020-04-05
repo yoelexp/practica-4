@@ -22,10 +22,15 @@ public class EjemConexion extends javax.swing.JFrame {
     // Declaramos los datos de conexion a la bd
     private static final String driver="com.mysql.jdbc.Driver";
     private static final String user="root";
-    private static final String pass="1234";
-    private static final String url="jdbc:mysql://localhost:3306/dbligamx";
+    private static final String pass="admin";
+    private static final String url="jdbc:mysql://localhost:3306/ligamx";
     // Funcion que va conectarse a mi bd de mysql
-    public void conector() {
+
+    /**
+     *
+     * @return
+     */
+    public Connection conector() {
         // Reseteamos a null la conexion a la bd
         con=null;
         try{
@@ -41,6 +46,7 @@ public class EjemConexion extends javax.swing.JFrame {
         catch (ClassNotFoundException | SQLException e){
             jLabel1.setText("Error de conexion" + e);
         }
+         return null;
     }
     
     public EjemConexion() {
