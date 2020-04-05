@@ -7,7 +7,9 @@ package ligamx;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -22,8 +24,8 @@ public class EjemConexion extends javax.swing.JFrame {
     // Declaramos los datos de conexion a la bd
     private static final String driver="com.mysql.jdbc.Driver";
     private static final String user="root";
-    private static final String pass="admin";
-    private static final String url="jdbc:mysql://localhost:3306/ligamx";
+    private static final String pass="1234";
+    private static final String url="jdbc:mysql://localhost:3306/dbligamx";
     // Funcion que va conectarse a mi bd de mysql
 
     /**
@@ -40,6 +42,16 @@ public class EjemConexion extends javax.swing.JFrame {
             // Si la conexion fue exitosa mostramos un mensaje de conexion exitosa
             if (con!=null){
                 jLabel1.setText("Conexion establecida");
+                String selectTableSQL = "SELECT idjugadores FROM jugadores";
+                Statement statement = con.createStatement();
+                ResultSet rs = statement.executeQuery(selectTableSQL);
+                while (rs.next()) {
+                String id = rs.getString("idjugadores");
+                System.out.println("userid : " + id);
+             
+                }
+
+                
             }
         }
         // Si la conexion NO fue exitosa mostramos un mensaje de error
@@ -103,6 +115,8 @@ public class EjemConexion extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         conector();
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

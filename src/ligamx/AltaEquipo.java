@@ -24,7 +24,7 @@ public class AltaEquipo extends javax.swing.JDialog {
     
         EjemConexion con= new EjemConexion();
         Connection cn=con.conector();
-    
+        
     public AltaEquipo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

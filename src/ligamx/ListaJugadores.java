@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,11 +26,11 @@ public class ListaJugadores extends javax.swing.JDialog {
     /**
      * Creates new form ListaJugadores
      */
-    public ListaJugadores(java.awt.Frame parent, boolean modal) {
+    public ListaJugadores(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         initComponents();
         
-        try{
+       // try{
           
           
           DefaultTableModel modelo=new DefaultTableModel(); 
@@ -36,12 +39,28 @@ public class ListaJugadores extends javax.swing.JDialog {
           ResultSet rs=null;
           EjemConexion con= new EjemConexion();
           Connection cn=con.conector();
-          String sql="SELECT nom,pat,mat,edad,posicion,id_equipo,sueldo FROM jugadores";
-          ps=cn.prepareStatement(sql);
-          rs=ps.executeQuery();
+          Statement statement = null;
+
+          //String sql="SELECT nom,pat,mat,edad,posicion,id_equipo,sueldo FROM jugadores";
+          String selectTableSQL = "SELECT idjugadores,nom,pat,sexo FROM jugadores";
+          statement = cn.createStatement();
+          rs = statement.executeQuery(selectTableSQL);
+          while (rs.next()) {
+                String id = rs.getString("idjugadores");
+                String usr = rs.getString("nom");
+                String psw = rs.getString("pat");
+                String nombre = rs.getString("sexo");
+                System.out.println("userid : " + id);
+                System.out.println("usr : " + usr);
+                System.out.println("psw : " + psw);
+                System.out.println("nombre : " + nombre);
+            }
+          //ps=cn.prepareStatement(sql);
+          //rs=ps.executeQuery();
           
-          ResultSetMetaData rsmd= rs.getMetaData();
-          int cantidadColumnas=rsmd.getColumnCount();
+          
+          //ResultSetMetaData rsmd= rs.getMetaData();
+          //int cantidadColumnas=rsmd.getColumnCount();
           
           modelo.addColumn("nombre");
           modelo.addColumn("apellido paterno");
@@ -51,23 +70,23 @@ public class ListaJugadores extends javax.swing.JDialog {
           modelo.addColumn("id equipo");
           modelo.addColumn("sueldo");
           
-          while(rs.next()){
+         // while(rs.next()){
               
-              Object[] filas=new Object[cantidadColumnas];
+             // Object[] filas=new Object[cantidadColumnas];
               
-              for(int i=0;1<cantidadColumnas;i++){
+             // for(int i=0;1<cantidadColumnas;i++){
                   
-                  filas[i]=rs.getObject(i+1);
-              }
-              
-              modelo.addRow(filas);
-          }
+                //  filas[i]=rs.getObject(i+1);
+            //  }
+             
+             // modelo.addRow(filas);
+          //}
           
           
             
-        }catch(SQLException ex){
-           System.err.println(ex.toString()); 
-        }
+        //}catch(SQLException ex){
+        //   System.err.println(ex.toString()); 
+        //}
         
         
     }
@@ -233,7 +252,12 @@ public class ListaJugadores extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ListaJugadores dialog = new ListaJugadores(new javax.swing.JFrame(), true);
+                ListaJugadores dialog = null;
+                try {
+                    dialog = new ListaJugadores(new javax.swing.JFrame(), true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ListaJugadores.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

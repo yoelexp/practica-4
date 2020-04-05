@@ -35,8 +35,8 @@ public class ListaEquipos extends javax.swing.JDialog {
           EjemConexion con= new EjemConexion();
           Connection cn=con.conector();
           String sql="SELECT id_equipo,nombre,ciudad,presupuesto FROM equipo";
-          ps=cn.prepareStatement(sql);
-          rs=ps.executeQuery();
+//          ps=cn.prepareStatement(sql);
+          //rs=ps.executeQuery();
           
           ResultSetMetaData rsmd= rs.getMetaData();
           int cantidadColumnas=rsmd.getColumnCount();
