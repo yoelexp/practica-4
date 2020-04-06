@@ -117,6 +117,11 @@ public class AltaJugadores extends javax.swing.JDialog {
         btncancelar.setBackground(new java.awt.Color(255, 51, 0));
         btncancelar.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         btncancelar.setText("CANCELAR");
+        btncancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelarActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel8.setText("Apellido Materno");
@@ -276,6 +281,11 @@ public class AltaJugadores extends javax.swing.JDialog {
     private void apmattxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apmattxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_apmattxtActionPerformed
+
+    private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btncancelarActionPerformed
 
     /**
      * @param args the command line arguments

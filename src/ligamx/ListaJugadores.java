@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -108,6 +109,7 @@ public class ListaJugadores extends javax.swing.JDialog {
         Buscar = new javax.swing.JButton();
         mostrar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        mostrar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
@@ -155,6 +157,15 @@ public class ListaJugadores extends javax.swing.JDialog {
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jButton1.setText("MODIFICAR");
 
+        mostrar1.setBackground(new java.awt.Color(255, 51, 51));
+        mostrar1.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        mostrar1.setText("ELIMINAR");
+        mostrar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrar1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -167,11 +178,13 @@ public class ListaJugadores extends javax.swing.JDialog {
                             .addComponent(jLabel1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(Buscar)
-                                .addGap(72, 72, 72)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(75, 75, 75)
-                                .addComponent(mostrar)))
-                        .addGap(0, 97, Short.MAX_VALUE))
+                                .addGap(38, 38, 38)
+                                .addComponent(mostrar)
+                                .addGap(18, 18, 18)
+                                .addComponent(mostrar1)))
+                        .addGap(0, 31, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -183,11 +196,11 @@ public class ListaJugadores extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(Buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mostrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(mostrar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 37, Short.MAX_VALUE))
         );
 
@@ -217,6 +230,40 @@ public class ListaJugadores extends javax.swing.JDialog {
     private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BuscarActionPerformed
+
+    private void mostrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrar1ActionPerformed
+        // TODO add your handling code here:
+     
+         DefaultTableModel modelo=new DefaultTableModel(); 
+          jTable1.setModel(modelo);
+          PreparedStatement ps=null;       
+          EjemConexion con= new EjemConexion();
+          Connection cn=con.conector();
+          Statement statement = null;
+          ResultSet rs=null;
+          //String sql="SELECT nom,pat,mat,edad,posicion,id_equipo,sueldo FROM jugadores";     
+        try{ 
+             
+          
+            int res =ps.executeUpdate();
+            if(res > 0){
+                int fila = jTable1.getSelectedRow();
+                String valor =jTable1.getValueAt(fila, 0).toString();               
+                statement = cn.createStatement();
+                String deleteTableSQL= "DELETE FROM jugadores where idjugadores='"+valor+"'";                             
+                 rs = statement.executeQuery(deleteTableSQL);
+                modelo.removeRow(fila);
+                JOptionPane.showMessageDialog(null, "Eliminado");
+                
+            } else {
+                 JOptionPane.showMessageDialog(null, "Sin eliminar");
+                 
+            }
+                        
+        }catch(Exception e){
+            System.err.println(e);
+        }
+    }//GEN-LAST:event_mostrar1ActionPerformed
 
     private void mostrarActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
@@ -278,5 +325,6 @@ public class ListaJugadores extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton mostrar;
+    private javax.swing.JButton mostrar1;
     // End of variables declaration//GEN-END:variables
 }

@@ -88,6 +88,11 @@ public class AltaEquipo extends javax.swing.JDialog {
         Cancelar.setBackground(new java.awt.Color(255, 51, 0));
         Cancelar.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         Cancelar.setText("CANCELAR");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         jLabel8.setText("Presupuesto");
@@ -185,6 +190,11 @@ public class AltaEquipo extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_AceptarActionPerformed
+
+    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_CancelarActionPerformed
 
     /**
      * @param args the command line arguments
